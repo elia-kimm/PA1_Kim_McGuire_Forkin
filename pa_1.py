@@ -84,7 +84,7 @@ def binary(numb):
         arr[pos] = numb % 2
         numb = numb //2
         pos -= 1
-        return arr
+    return arr
 
 # Addition
 def add_numbs(A,B):
@@ -123,3 +123,33 @@ def add_numbs(A,B):
     result[1], carry31 = add_bits(A[1], B[1], carry30)
     result[0], carry32 = add_bits(A[0], B[0], carry31)
     return result, carry32
+
+def invert(B):
+    return[
+        int(not B[0]), int(not B[1]), int(not B[2]]0, int(not B[3]), int(not B[4]), int(not B[5]),
+        int(not B[6]), int(not B[7]), int(not B[8], int(not B[9], int(not B[10], int(not B[11]),
+        int(not B[12]), int(not B[13]), int(not B[14]), int(not B[15]), int(not B[16]), int(not B[17]),
+        int(not B[18]), int(not B[19]), int(not B[20]), int(not B[21]), int(not B[22]), int(not B[23]),
+        int(not B[24]), int(not B[25]), int(not B[26]), int(not B[27]), int(not B[28]), int(not B[29]),
+        int(not B[30]), int(not B[31]) ]
+
+def add1(B):
+        1 = [0]*31 + [1]
+        result, carry = add_numbs (B, one)
+        return result
+
+def subtract(A, B):
+              B_inv = invert(B)
+              B_twos = add1(B_inv)
+              result, carry = add_numbs(A, B_twos)
+            return result
+
+def to_decimal(B):
+            value = 0
+            power = 1
+
+                    for i in range(31, -1 , -1):
+                        if B[i] == 1:
+                            value += power
+                        power *=2
+                    return value
