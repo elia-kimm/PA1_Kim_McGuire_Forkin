@@ -67,3 +67,29 @@ def main():
 
 main()
 
+# Part 2
+
+# full adder
+def add_bits(a,b,carry):
+    temp = (a or b) and not (a and b)
+    sum_bits = (temp or carry) and not (temp and carry)
+    carryy = (a and b) or (carry and temp)
+    return sum_bits, carryy
+
+# Convert to 32 bits
+def binary(numb):
+    arr = [0]*32
+    pos = 31
+    while numb > 0 and pos >= 0:
+        arr[pos] = numb % 2
+        numb = numb //2
+        pos -= 1
+        return arr
+
+# Addition
+def add_numbs(A,B):
+    result = [0]*32
+    carry0 = False
+    result[31], carry1 = add_bits(A[31], B[31], carry0)
+    result[30], carry2 = add_bibts(A[30], B[30], carry1)
+    
