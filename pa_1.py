@@ -137,6 +137,7 @@ def add_numbs(A,B):
     result[0], carry32 = add_bits(A[0], B[0], carry31)
     return result, carry32
 
+# Invert all the bits in array B
 def invert(B):
     return[
         int(not B[0]), int(not B[1]), int(not B[2]]0, int(not B[3]), int(not B[4]), int(not B[5]),
@@ -150,7 +151,8 @@ def add1(B):
         1 = [0]*31 + [1]
         result, carry = add_numbs (B, one)
         return result
-
+              
+#Invert B, add 1, and add A plus negative B
 def subtract(A, B):
               B_inv = invert(B)
               B_twos = add1(B_inv)
@@ -160,9 +162,10 @@ def subtract(A, B):
 def to_decimal(B):
             value = 0
             power = 1
-
-                    for i in range(31, -1 , -1):
-                        if B[i] == 1:
-                            value += power
+                for i in range(31, -1 , -1):
+                    if B[i] == 1:
+                        # Add power of 2 if bit is 1
+                        value += power
+                        # Increase the next bit's power
                         power *=2
-                    return value
+                return value
