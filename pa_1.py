@@ -70,6 +70,8 @@ main()
 # Part 2
 
 # full adder
+# We want to add two single bits (A and B) as well as a carry using logical gates. This 
+returns the sum of the bits and the carry out portion. 
 def add_bits(a,b,carry):
     temp = (a or b) and not (a and b)
     sum_bits = (temp or carry) and not (temp and carry)
@@ -77,19 +79,30 @@ def add_bits(a,b,carry):
     return sum_bits, carryy
 
 # Convert to 32 bits
+# We want to convert a positive integer into a 32 bit binary array. 
+# Each index represents a bit
 def binary(numb):
+    # Start the 32 bit array with 0s
     arr = [0]*32
+    # Start filling in from the right bit
     pos = 31
+    # Loop until the array is finished
     while numb > 0 and pos >= 0:
+        # Store the remainder 
         arr[pos] = numb % 2
+        # Divide by 2 to shift the number right
         numb = numb //2
+        # Move left
         pos -= 1
     return arr
 
 # Addition
 def add_numbs(A,B):
+    # Start the array with 0s
     result = [0]*32
+    #The carry in is 0
     carry0 = False
+    # We manually compute each bit starting from 31 to 0
     result[31], carry1 = add_bits(A[31], B[31], carry0)
     result[30], carry2 = add_bits(A[30], B[30], carry1)
     result[29], carry3 = add_bits(A[29], B[29], carry2)
