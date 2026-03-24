@@ -1,7 +1,7 @@
 # Program: Programming Assignment 1 (Part 1)
 # Two-bit binary addition using only logical operations
 # Authors: Vanessa McGuire, Sophia Forkin, Elia Kim
-# Date Started: 
+# Date Started: Febraury 23, 2026
 # Date Due: March 26, 2026
 # INPUTS: A2, A1 (two-bit first binary number)
 #         B2, B1 (two-bit second binary number)
@@ -29,27 +29,17 @@ def sum_two_bit(A2, A1, B2, B1):
     # compute carry (if necessary)
     C2 = A2 and B2
 
-
     # add first carry (if it exists) into the previous sum, T
     # to finalize the addition in the left column
     S2 = (T or C1) and not(T and C1)
     # compute carry (if necessary)
     C3 = T and C1
 
-
     # compute the final carry-out (if necessary)
     Cout = C2 or C3
 
-    val_a = (int(A2) * 2) + int(A1)
-    val_b = (int(B2) * 2) + int(B1)
-    # multiply by the weight of the bits (Cout=4, S2=2, S1=1)
-    val_sum = (int(Cout) * 4) + (int(S2) * 2) + int(S1)
-    # print the final result and convert the
-    # booleans into ints
-    print(f"Binary: {int(Cout)}{int(S2)}{int(S1)}")
-    print(f"Base 10: {val_a} + {val_b} = {val_sum}")
+    return Cout, S2, S1
 
-    
 
 # Part 2
 
@@ -62,8 +52,10 @@ def add_bits(a, b, carry):
     # Logic : (a XOR b) XOR carrry
     temp = (a or b) and not (a and b)
     sum_bits = (temp or carry) and not (temp and carry)
+    
     # carry logic : (a AND b) OR (carry AND temp)
     carry_out = (a and b) or (carry and temp)
+    
     return int(sum_bits), carry_out
 
 # Convert to 32 bits
@@ -73,8 +65,10 @@ def binary(numb):
     
     is_negative = numb < 0
     n = abs(numb)
+    
     # Start the 32 bit array with 0s
     arr = [0] * 32
+    
     # Start filling in from the right bit
     pos = 31
     # Loop until the array is finished
@@ -86,18 +80,21 @@ def binary(numb):
         # Move left
         pos -= 1
         
-    if is_negative :
+    if is_negative:
         # Conver the positive array to negative using our logic tools
         inverted = invert(arr)
         arr = add_numbs(inverted, binary(1))[0]
+        
     return arr
 
 # Addition
 def add_numbs(A, B):
     # Start the array with 0s
     result = [0] * 32
+    
     #The carry in is 0
     carry0 = False
+    
     # We manually compute each bit starting from 31 to 0
     result[31], carry1 = add_bits(A[31], B[31], carry0)
     result[30], carry2 = add_bits(A[30], B[30], carry1)
@@ -131,6 +128,7 @@ def add_numbs(A, B):
     result[2], carry30 = add_bits(A[2], B[2], carry29)
     result[1], carry31 = add_bits(A[1], B[1], carry30)
     result[0], carry32 = add_bits(A[0], B[0], carry31)
+    
     return result, carry32
     
 """def add_numbs(A, B) :
@@ -169,10 +167,13 @@ def subtract(A, B):
     # invert b, add 1 to get the Two's complement, then A + (-B)
     B_inv = invert(B)
     one_binary = binary(1)
+    
     # must get rid of the carry .
     B_twos = add_numbs(B_inv, one_binary)[0]  #add1(B_inv)
+    
     #result, carry = add_numbs(A, B_twos)
     result = add_numbs(A, B_twos)[0]
+    
     return result, B_twos
 
 # This is to check the 32nd bit.
@@ -188,6 +189,7 @@ def to_decimal(B):
     
     value = 0
     power = 1
+    
     # Add weights for bits 1 through 31
     for i in range(1, 32):
         if B[i] == 1:
@@ -213,6 +215,7 @@ def check_overflow(A, B, Res):
     return overflow
 
 def main():
+    # Part 1
     # print to the user the program function and the action
     # that is needed
     print("This is a program to compute two-bit binary addition")
@@ -231,8 +234,21 @@ def main():
     B1 = (B1 == 1)
 
     # compute the sum using binary addition
-    sum_two_bit(A2, A1, B2, B1)
+    Cout, S2, S1 = sum_two_bit(A2, A1, B2, B1)
     
+    # convert Part 1 inputs into base 10
+    val_a = (int(A2) * 2) + int(A1)
+    val_b = (int(B2) * 2) + int(B1)
+    # multiply by the weight of the bits (Cout=4, S2=2, S1=1)
+    val_sum = (int(Cout) * 4) + (int(S2) * 2) + int(S1)
+
+    # print Part 1 result
+    # print the final result and convert the
+    # booleans into ints
+    print(f"Binary: {int(Cout)}{int(S2)}{int(S1)}")
+    print(f"Base 10: {val_a} + {val_b} = {val_sum}")
+
+    # Part 2
     print("\n--- PART 2: 32-BIT SYSTEM ---")
     val1 = int(input("Enter first base-10 number: "))
     val2 = int(input("Enter second base-10 number: "))
@@ -242,7 +258,8 @@ def main():
     B_bin = binary(val2)
 
     if op == '+':
-        res, overflow = add_numbs(A_bin, B_bin)
+        res, carry_out = add_numbs(A_bin, B_bin)
+        overflow = check_overflow(A_bin, B_bin, res)
         if overflow:
             print("ERROR: Overflow!")
         else:
