@@ -325,3 +325,40 @@ if __name__ == "__main__":
     
     print("\n--- PART 2 AUTOMATED TESTS ---")
     run_tests()"""
+
+"""def run_part1_tests():
+    # Required Part 1 test cases from the assignment
+    # Format: (A2, A1, B2, B1)
+    test_cases = [
+        (0,0,0,0),    # 00 + 00 = 000
+        (0,1,0,0),    # 01 + 00 = 001
+        (0,1,0,1),    # 01 + 01 = 010 
+        (1,0,0,1),    # 10 + 01 = 011
+        (1,0,1,0),    # 10 + 10 = 100
+    ]
+
+    print(f"{'Input A':<8} | {'Input B':<8} | {'Binary Result':<14} | {'Base 10'}")
+    print("-" * 55)
+
+    for A2, A1, B2, B1 in test_cases:
+        # Convert integers into booleans 
+        A2_bool = (A2 == 1)
+        A1_bool = (A1 == 1)
+        B2_bool = (B2 == 1)
+        B1_bool = (B1 == 1)
+
+        # Compute Part 1 sum
+        Cout, S2, S1 = sum_two_bit(A2, A1, B2, B1)
+
+        # Convert Part 1 inputs and result into base 10
+        val_a = (int(A2) * 2) + int(A1)
+        val_b = (int(B2) * 2) + int(B1)
+        val_sum = (int(Cout) * 4) + (int(S2) * 2) + int(S1)
+
+        # Format binary strings
+        input_a = f"{A2}{A1}"
+        input_b = f"{B2}{B1}"
+        binary_result = f"{int(Cout)}{int(S2)}{int(S1)}"
+
+        print(f"{input_a:<8} | {input_b:<8} | {binary_result:<14} | {val_a} + {val_b} = {val_sum}")
+
