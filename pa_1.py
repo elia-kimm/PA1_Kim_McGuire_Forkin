@@ -218,6 +218,7 @@ def main():
     # Part 1
     # print to the user the program function and the action
     # that is needed
+    print("\n--- PART 1: 2-BIT ADDITION ---")
     print("This is a program to compute two-bit binary addition")
     print("Enter inputs for the four bits (0 or 1)")
 
