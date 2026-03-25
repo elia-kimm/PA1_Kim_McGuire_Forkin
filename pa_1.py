@@ -252,7 +252,7 @@ def main():
     print("\n--- PART 2: 32-BIT SYSTEM ---")
     val1 = int(input("Enter first base-10 number: "))
     val2 = int(input("Enter second base-10 number: "))
-    op = input("Add or Subtract? (+/-): ")
+    op = input("Add, Subtract, or Multiply? (+/-/*): ")
 
     A_bin = binary(val1)
     B_bin = binary(val2)
@@ -265,7 +265,7 @@ def main():
         else:
             print(f"Binary: {''.join(map(str, res))}")
             print(f"Base 10: {to_decimal(res)}")
-    else:
+    elif op == '-':
         # User ensures A > B as per prompt instructions
         res, B_twos = subtract(A_bin, B_bin)
         overflow = check_overflow(A_bin, B_twos, res)
@@ -274,6 +274,42 @@ def main():
         else:
             print(f"Binary: {''.join(map(str, res))}")
             print(f"Base 10: {to_decimal(res)}")
+    elif op == '*':   
+        res = multiply_numbs(A_bin, B_bin)
+        print(f"Binary: {''.join(map(str,res))}")
+        print(f"Base 10: {to_decimal(res)}")
+        else: 
+            print("Invalid operation.")
+
+# Extra Credit
+
+def multiply_numbs(A,B):
+    # Result starts at 0 
+    result = [0] * 32
+
+    # Start from rightmost bit
+    i = 31
+    shift = 0 
+
+    while i >= 0:
+        # If current bit of B is 1
+        if B[i] == 1:
+            # Shift A left by 'shift' position
+            shifted_A = A[:]
+
+            # Perform shift manually 
+            j = 0 
+            while j < shift:
+                shifted_A = shifted_A[1:] + [0]
+                j += 1
+
+            # Add shifted A to result using logic-based addition
+            result = add_numbs(result, shifted_A)[0]
+
+        i -= 1
+        shift += 1
+
+    return result 
 
 main()
 
@@ -348,7 +384,7 @@ if __name__ == "__main__":
         B1_bool = (B1 == 1)
 
         # Compute Part 1 sum
-        Cout, S2, S1 = sum_two_bit(A2, A1, B2, B1)
+        Cout, S2, S1 = sum_two_bit(A2_bool, A1_bool, B2_bool, B1_bool)
 
         # Convert Part 1 inputs and result into base 10
         val_a = (int(A2) * 2) + int(A1)
@@ -361,4 +397,36 @@ if __name__ == "__main__":
         binary_result = f"{int(Cout)}{int(S2)}{int(S1)}"
 
         print(f"{input_a:<8} | {input_b:<8} | {binary_result:<14} | {val_a} + {val_b} = {val_sum}")
+        """
+
+"""def run_extra_credit_tests():
+    # Required Extra Credit test cases
+    test_cases = [
+        (11,12),            # 132
+        (0,15),             # 0
+        (200000, 200000)    # large number (may overflow 32-bit)
+    ]
+
+    print(f"{'Operation':<20} | {'Binary Result':<34} | {'Base 10'}")
+    print("-" * 75)
+
+    for v1, v2 in test_cases:
+        # Convert to 32-bit binary
+        A_bin = binary(v1)
+        B_bin = binary(v2)
+
+        # Perform multiplication
+        res = multiply_numbs(A_bin, B_bin)
+
+        # Format output 
+        bin_str = "".join(map(str,res))
+        val_10 = to_decimal(res)
+
+        print(f"{v1} * {v2:<10} | {bin_str} | {val_10}")
+
+if __name__ == "__main__":
+    print("\n--- EXTRA CREDIT TESTS ---")
+    run_extra_credit_tests()
+"""
+        
 
